@@ -1,0 +1,25 @@
+﻿<Window x:Class="Tema2_Universitate.Views.AddStudentWindow"
+        x:Name="CurrentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tema2_Universitate.Views"
+        xmlns:vm="clr-namespace:Tema2_Universitate.ViewModels"
+        mc:Ignorable="d"
+        Title="AddPaymentWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:AddPaymentWindowVM/>
+    </Window.DataContext>
+    <Grid>
+        <Button Content="AddPayment" Command="{Binding AddPaymentCommand}" CommandParameter="{Binding ElementName=CurrentWindow}" HorizontalAlignment="Left" Margin="386,267,0,0" VerticalAlignment="Top" Height="41" Width="96"/>
+        <TextBox HorizontalAlignment="Left" Margin="346,219,0,0" TextWrapping="Wrap" Text="{Binding PaymentID}" VerticalAlignment="Top" Width="175" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Margin="346,171,0,0" TextWrapping="Wrap" Text="{Binding CNP}" VerticalAlignment="Top" Width="176" Height="25"/>
+        <Label Content="To add a new payment, introduce its datas below" FontWeight="DemiBold" HorizontalContentAlignment="Center" FontSize="19" HorizontalAlignment="Center" Margin="0,66,0,0" VerticalAlignment="Top" Height="38" Width="529"/>
+        <Label Content="Payment ID:" FontStyle="Italic" FontWeight="SemiBold" HorizontalContentAlignment="Center" FontSize="15" HorizontalAlignment="Left" Margin="254,125,0,0" VerticalAlignment="Top"/>
+        <Label Content="Student's CNP:" FontStyle="Italic" FontWeight="SemiBold" HorizontalContentAlignment="Center" FontSize="15" HorizontalAlignment="Left" Margin="255,169,0,0" VerticalAlignment="Top"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="D:\user\Pictures\889fbfcc74365ebd088b30d32048bced.jpg" Stretch="UniformToFill" Opacity="0.9"/>
+        </Grid.Background>
+    </Grid>
+</Window>

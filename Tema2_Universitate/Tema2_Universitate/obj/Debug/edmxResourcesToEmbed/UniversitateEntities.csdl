@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="universitateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Dormitories">
+    <Key>
+      <PropertyRef Name="DormitoryNumber" />
+    </Key>
+    <Property Name="DormitoryNumber" Type="Int32" Nullable="false" />
+    <Property Name="Fee" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK__Rooms__Dormitory__29572725" FromRole="Dormitories" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="PaymentID" />
+    </Key>
+    <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CNP" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="0" />
+    <Property Name="AmountPaid" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Penalties" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__Payments__CNP__2D27B809" FromRole="Payments" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="RoomDetails">
+    <Key>
+      <PropertyRef Name="RoomDetailID" />
+    </Key>
+    <Property Name="RoomDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoomNumber" Type="Int32" Nullable="false" />
+    <Property Name="StudentCNP" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NumarStudenti" Type="Int32" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK__RoomDetai__RoomN__6FE99F9F" FromRole="RoomDetails" ToRole="Rooms" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__RoomDetai__Stude__70DDC3D8" FromRole="RoomDetails" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="RoomNumber" />
+    </Key>
+    <Property Name="RoomNumber" Type="Int32" Nullable="false" />
+    <Property Name="DormitoryNumber" Type="Int32" />
+    <Property Name="CNP" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Dormitories" Relationship="Self.FK__Rooms__Dormitory__29572725" FromRole="Rooms" ToRole="Dormitories" />
+    <NavigationProperty Name="RoomDetails" Relationship="Self.FK__RoomDetai__RoomN__6FE99F9F" FromRole="Rooms" ToRole="RoomDetails" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__Rooms__CNP__2A4B4B5E" FromRole="Rooms" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="CNP" />
+    </Key>
+    <Property Name="CNP" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Faculty" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="StudentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Fee" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="UserID" Type="Int32" />
+    <NavigationProperty Name="Payments" Relationship="Self.FK__Payments__CNP__2D27B809" FromRole="Students" ToRole="Payments" />
+    <NavigationProperty Name="RoomDetails" Relationship="Self.FK__RoomDetai__Stude__70DDC3D8" FromRole="Students" ToRole="RoomDetails" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK__Rooms__CNP__2A4B4B5E" FromRole="Students" ToRole="Rooms" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__Students__UserID__4E88ABD4" FromRole="Students" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserID__4E88ABD4" FromRole="Users" ToRole="Students" />
+  </EntityType>
+  <Association Name="FK__Rooms__Dormitory__29572725">
+    <End Role="Dormitories" Type="Self.Dormitories" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitories">
+        <PropertyRef Name="DormitoryNumber" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="DormitoryNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Payments__CNP__2D27B809">
+    <End Role="Students" Type="Self.Students" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="CNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RoomDetai__RoomN__6FE99F9F">
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="1" />
+    <End Role="RoomDetails" Type="Self.RoomDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="RoomNumber" />
+      </Principal>
+      <Dependent Role="RoomDetails">
+        <PropertyRef Name="RoomNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RoomDetai__Stude__70DDC3D8">
+    <End Role="Students" Type="Self.Students" Multiplicity="1" />
+    <End Role="RoomDetails" Type="Self.RoomDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="RoomDetails">
+        <PropertyRef Name="StudentCNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Rooms__CNP__2A4B4B5E">
+    <End Role="Students" Type="Self.Students" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="CNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Students__UserID__4E88ABD4">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Students" Type="Self.Students" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="universitateEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Dormitories" EntityType="Self.Dormitories" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" />
+    <EntitySet Name="RoomDetails" EntityType="Self.RoomDetails" />
+    <EntitySet Name="Rooms" EntityType="Self.Rooms" />
+    <EntitySet Name="Students" EntityType="Self.Students" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK__Rooms__Dormitory__29572725" Association="Self.FK__Rooms__Dormitory__29572725">
+      <End Role="Dormitories" EntitySet="Dormitories" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Payments__CNP__2D27B809" Association="Self.FK__Payments__CNP__2D27B809">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RoomDetai__RoomN__6FE99F9F" Association="Self.FK__RoomDetai__RoomN__6FE99F9F">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="RoomDetails" EntitySet="RoomDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RoomDetai__Stude__70DDC3D8" Association="Self.FK__RoomDetai__Stude__70DDC3D8">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="RoomDetails" EntitySet="RoomDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Rooms__CNP__2A4B4B5E" Association="Self.FK__Rooms__CNP__2A4B4B5E">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Students__UserID__4E88ABD4" Association="Self.FK__Students__UserID__4E88ABD4">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

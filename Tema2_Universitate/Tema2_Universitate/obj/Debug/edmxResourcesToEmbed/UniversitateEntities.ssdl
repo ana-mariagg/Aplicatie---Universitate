@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="universitateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Dormitories">
+    <Key>
+      <PropertyRef Name="DormitoryNumber" />
+    </Key>
+    <Property Name="DormitoryNumber" Type="int" Nullable="false" />
+    <Property Name="Fee" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="PaymentID" />
+    </Key>
+    <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CNP" Type="varchar" MaxLength="13" />
+    <Property Name="PaymentDate" Type="date" />
+    <Property Name="AmountPaid" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="Penalties" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="RoomDetails">
+    <Key>
+      <PropertyRef Name="RoomDetailID" />
+    </Key>
+    <Property Name="RoomDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoomNumber" Type="int" Nullable="false" />
+    <Property Name="StudentCNP" Type="varchar" MaxLength="13" Nullable="false" />
+    <Property Name="NumarStudenti" Type="int" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="RoomNumber" />
+    </Key>
+    <Property Name="RoomNumber" Type="int" Nullable="false" />
+    <Property Name="DormitoryNumber" Type="int" />
+    <Property Name="CNP" Type="varchar" MaxLength="13" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="CNP" />
+    </Key>
+    <Property Name="CNP" Type="varchar" MaxLength="13" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Faculty" Type="nvarchar" MaxLength="100" />
+    <Property Name="StudentStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="Fee" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="UserID" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" MaxLength="255" />
+    <Property Name="Password" Type="nvarchar" MaxLength="255" />
+    <Property Name="Role" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK__Payments__CNP__2D27B809">
+    <End Role="Students" Type="Self.Students" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="CNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RoomDetai__RoomN__6FE99F9F">
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="1" />
+    <End Role="RoomDetails" Type="Self.RoomDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="RoomNumber" />
+      </Principal>
+      <Dependent Role="RoomDetails">
+        <PropertyRef Name="RoomNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RoomDetai__Stude__70DDC3D8">
+    <End Role="Students" Type="Self.Students" Multiplicity="1" />
+    <End Role="RoomDetails" Type="Self.RoomDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="RoomDetails">
+        <PropertyRef Name="StudentCNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Rooms__CNP__2A4B4B5E">
+    <End Role="Students" Type="Self.Students" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="CNP" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="CNP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Rooms__Dormitory__29572725">
+    <End Role="Dormitories" Type="Self.Dormitories" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitories">
+        <PropertyRef Name="DormitoryNumber" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="DormitoryNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Students__UserID__4E88ABD4">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Students" Type="Self.Students" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="universitateModelStoreContainer">
+    <EntitySet Name="Dormitories" EntityType="Self.Dormitories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomDetails" EntityType="Self.RoomDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Payments__CNP__2D27B809" Association="Self.FK__Payments__CNP__2D27B809">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RoomDetai__RoomN__6FE99F9F" Association="Self.FK__RoomDetai__RoomN__6FE99F9F">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="RoomDetails" EntitySet="RoomDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RoomDetai__Stude__70DDC3D8" Association="Self.FK__RoomDetai__Stude__70DDC3D8">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="RoomDetails" EntitySet="RoomDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Rooms__CNP__2A4B4B5E" Association="Self.FK__Rooms__CNP__2A4B4B5E">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Rooms__Dormitory__29572725" Association="Self.FK__Rooms__Dormitory__29572725">
+      <End Role="Dormitories" EntitySet="Dormitories" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Students__UserID__4E88ABD4" Association="Self.FK__Students__UserID__4E88ABD4">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
